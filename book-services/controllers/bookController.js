@@ -1,6 +1,7 @@
 const db = require("../models");
 const Book = db.Book;
 const { Op } = db.Sequelize;
+const rabbitmq = require("../config/rabbitmq");
 
 // Get all books
 exports.getAllBooks = async (req, res) => {
@@ -109,6 +110,18 @@ exports.createBook = async (req, res) => {
       image
     });
     
+await rabbitmq.sendToQueue("book created", {
+ event: "book.created",
+ timestamp: new Date().toISOString(),
+ data: {
+ id: book.id,
+ title: book.title,
+ author: book.author,
+ is_free: book.is_free,
+ language: book.language,
+ },
+ });
+ //end of message broker
     res.status(201).json({
       success: true,
       message: "Book created successfully",
