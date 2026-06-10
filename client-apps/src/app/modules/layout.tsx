@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import ProtectedRoute from "@/components/auths/protected-route";
 import Modals from "@/components/ui/modals";
+import {ServiceWorkerRegistration} from "@/components/pwa/SW-registration";
 
 export const metadata: Metadata = {
   title: "Client Apps - ML & Auth Platform",
@@ -35,7 +36,9 @@ export default function ModulesLayout({
   return (
     <ProtectedRoute>
       {children}
+      <ServiceWorkerRegistration />
       <Modals />
+     
     </ProtectedRoute>
   );
 }
